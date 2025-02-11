@@ -9,11 +9,23 @@ export default function TodoGroup() {
     const [todoList, setTodoList] = useState<TodoList>(initialList);
 
     useEffect(() => {
-        console.log(`Fetched list: ${todoList}`)
+        console.log(todoList)
     }, [todoList])
 
     const addTodo = () => {
-        setTodoList([...todoList, { id: todoList[todoList.length - 1].id + 1, title: "test add", completed: true }]);
+        const modifiedList = [...todoList];
+
+        let newId;
+        if (modifiedList.length <= 0) {
+            newId = 0;
+        }
+        else {
+            newId = modifiedList[modifiedList.length - 1].id + 1;
+        }
+
+        modifiedList.push({ id: newId, title: "test add", completed: true })
+
+        setTodoList(modifiedList);
     }
 
     function handleOnDeleteTodo(id: number) {
