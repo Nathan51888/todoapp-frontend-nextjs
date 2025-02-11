@@ -30,8 +30,17 @@ export default function TodoGroup() {
 
     const handleOnTitleChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
         // change title
-        console.log("title changed to:" + e.target.value);
+        const changedTitle = e.target.value;
+        console.log("title changed to:" + changedTitle);
 
+        const modifiedList = todoList.map((item) => {
+            if (item.id === id)
+                item.title = changedTitle;
+
+            return item;
+        })
+
+        setTodoList(modifiedList)
     }
 
     function handleOnDeleteTodo(id: number) {
