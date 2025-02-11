@@ -28,6 +28,12 @@ export default function TodoGroup() {
         setTodoList(modifiedList);
     }
 
+    const handleOnTitleChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+        // change title
+        console.log("title changed to:" + e.target.value);
+
+    }
+
     function handleOnDeleteTodo(id: number) {
         console.log(`id: ${id}`);
         const modifiedList = [...todoList];
@@ -41,18 +47,24 @@ export default function TodoGroup() {
         setTodoList(modifiedList);
     }
 
+    function handleCheckboxChange(id: number) {
+        console.log(`id: ${id}`);
+        const todoIndex = todoList.findIndex((element) => element.id === id);
+        const modifiedList = todoList.map((item, index) => {
+            if (todoIndex === index)
+                item.completed = !item.completed;
 
-    const handleOnTitleChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
-        // change title
-        console.log("title changed to:" + e.target.value);
+            return item;
+        });
 
+        setTodoList(modifiedList)
     }
 
     return (
         <div className="flex flex-col gap-6 h-full bg-gray-200 p-10 px-20 rounded-lg">
             <button onClick={addTodo}>Add</button>
             {todoList.map((item, index) => (
-                <Todo key={index} handleOnTitleChange={handleOnTitleChange} handleOnDeleteClick={handleOnDeleteTodo} item={item}></Todo>
+                <Todo key={index} handleCheckboxChange={handleCheckboxChange} handleOnTitleChange={handleOnTitleChange} handleOnDeleteClick={handleOnDeleteTodo} item={item}></Todo>
             ))}
         </div>
     )
