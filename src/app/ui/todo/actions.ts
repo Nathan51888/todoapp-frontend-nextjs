@@ -1,6 +1,6 @@
 "use server"
 
-import { createTodo, deleteTodoById, updateTodoCompleted } from "@/app/lib/data"
+import { createTodo, deleteTodoById, updateTodoCompleted, updateTodoTitle } from "@/app/lib/data"
 import { revalidatePath } from "next/cache"
 
 export async function createTodoAction(prevState: any, formData: FormData) {
@@ -19,6 +19,14 @@ export async function updateTodoCompletedAction(id: number, completed: boolean) 
     console.log(id, completed)
     const data = await updateTodoCompleted(id, completed)
     console.log(data)
+    revalidatePath("/")
+}
+
+export async function updateTodoTitleAction(formData: FormData) {
+    const id = Number(formData.get("id"))
+    const title = formData.get("title") as string
+    const data = await updateTodoTitle(id, title)
+    console.log("action data: ", data)
 }
 
 export async function deleteTodoAction(formData: FormData) {

@@ -31,6 +31,15 @@ export async function updateTodoCompleted(id: number, completed: boolean): Promi
     return data
 }
 
+export async function updateTodoTitle(id: number, title: string) {
+    const res = await fetch(`http://localhost:8080/todo?id=${id}&title=${title}`, {
+        method: "PUT"
+    })
+    const data = await res.json()
+    console.log("updateTodoTitle fetched data: ", data)
+    return data
+}
+
 export async function deleteTodoById(id: number): Promise<TodoObject> {
     const res = await fetch("http://localhost:8080/todo?id=" + id, {
         method: "DELETE",
