@@ -1,25 +1,29 @@
 "use server"
 
+import { createTodo, deleteTodoById, updateTodoCompleted } from "@/app/lib/data"
 import { revalidatePath } from "next/cache"
 
-export async function createTodo(prevState: any, formData: FormData) {
+export async function createTodoAction(prevState: any, formData: FormData) {
     const title = formData.get("title") as string
+    const data = await createTodo(title)
     await new Promise((resolve) => setTimeout(resolve, 1500))
-    const res = await fetch("http://localhost:8080/todo", {
-        method: "POST",
-        body: JSON.stringify({
-            title: title,
-        }),
-        headers: {
-            "Content-type": "application/json"
-        }
-    })
-
-    const data = await res.json()
     console.log(data)
     revalidatePath('/')
 
     return {
         title: title
     }
+}
+
+export async function updateTodoCompletedAction(id: number, completed: boolean) {
+    console.log(id, completed)
+    const data = await updateTodoCompleted(id, completed)
+    console.log(data)
+}
+
+export async function deleteTodoAction(formData: FormData) {
+    const id = Number(formData.get("id"))
+    const data = await deleteTodoById(id)
+    console.log(data)
+    revalidatePath("/")
 }

@@ -1,15 +1,12 @@
-import { TodoList } from "./definitions";
+import { TodoList, TodoObject } from "./definitions";
 
 export async function getAllTodos(): Promise<TodoList> {
     const res = await fetch("http://localhost:8080/todo")
     const data = await res.json()
-    await new Promise((resolve) => setTimeout(resolve, 1500))
     return data
 }
 
-export async function createTodo(previousState: string, formData: FormData) {
-    console.log(previousState)
-    const title = formData.get("title") as string
+export async function createTodo(title: string): Promise<TodoObject> {
     const res = await fetch("http://localhost:8080/todo", {
         method: "POST",
         body: JSON.stringify({
@@ -22,6 +19,23 @@ export async function createTodo(previousState: string, formData: FormData) {
     })
     const data = await res.json()
     console.log(data)
-    return previousState
+    return data
 }
 
+export async function updateTodoCompleted(id: number, completed: boolean): Promise<TodoObject> {
+    const res = await fetch(`http://localhost:8080/todo?id=${id}&completed=${completed}`, {
+        method: "PUT"
+    })
+    const data = await res.json()
+    console.log(data)
+    return data
+}
+
+export async function deleteTodoById(id: number): Promise<TodoObject> {
+    const res = await fetch("http://localhost:8080/todo?id=" + id, {
+        method: "DELETE",
+    })
+    const data = await res.json()
+    console.log(data)
+    return data
+}

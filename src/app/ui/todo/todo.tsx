@@ -1,4 +1,6 @@
 import type { TodoObject } from '@/app/lib/definitions'
+import { TodoDeleteForm } from './todo-delete-form';
+import { TodoCheckboxForm } from './todo-checkbox-form';
 
 export default function Todo({
     todo
@@ -7,10 +9,9 @@ export default function Todo({
 }) {
     return (
         <div className="flex flex-row gap-5 bg-gray-100 p-3 rounded-lg">
-            <input type='checkbox' />
+            <TodoCheckboxForm todo={todo}></TodoCheckboxForm>
             <p className='flex-grow'>{todo.title}</p>
-            <button>Delete</button>
-            <button>Edit</button>
+            <TodoDeleteForm id={todo.id}></TodoDeleteForm>
         </div>
     );
 }

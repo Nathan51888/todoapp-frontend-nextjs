@@ -23,10 +23,10 @@ export default function TodoGroup({
     }, [todoList])
 
     return (
-        <>
-            {todoList.map((item, index) => (
+        <div>
+            {todoList && todoList.map((item, index) => (
                 <Todo key={index} todo={item}></Todo>
             ))}
-        </>
+        </div>
     )
 }

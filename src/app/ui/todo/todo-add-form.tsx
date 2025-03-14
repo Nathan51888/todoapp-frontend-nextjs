@@ -1,10 +1,10 @@
 'use client'
 
 import { useActionState } from "react"
-import { createTodo } from "./actions"
+import { createTodoAction } from "./actions"
 
 export default function TodoAddForm() {
-    const [state, formAction, isPending] = useActionState(createTodo, {
+    const [state, formAction, isPending] = useActionState(createTodoAction, {
         title: "",
     })
     return (
