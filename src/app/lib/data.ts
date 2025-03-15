@@ -22,7 +22,7 @@ export async function createTodo(title: string): Promise<TodoObject> {
     return data
 }
 
-export async function updateTodoCompleted(id: number, completed: boolean): Promise<TodoObject> {
+export async function updateTodoCompleted(id: string, completed: boolean): Promise<TodoObject> {
     const res = await fetch(`http://localhost:8080/todo?id=${id}&completed=${completed}`, {
         method: "PUT"
     })
@@ -31,7 +31,7 @@ export async function updateTodoCompleted(id: number, completed: boolean): Promi
     return data
 }
 
-export async function updateTodoTitle(id: number, title: string) {
+export async function updateTodoTitle(id: string, title: string) {
     const res = await fetch(`http://localhost:8080/todo?id=${id}&title=${title}`, {
         method: "PUT"
     })
@@ -40,7 +40,7 @@ export async function updateTodoTitle(id: number, title: string) {
     return data
 }
 
-export async function deleteTodoById(id: number): Promise<TodoObject> {
+export async function deleteTodoById(id: string): Promise<TodoObject> {
     const res = await fetch("http://localhost:8080/todo?id=" + id, {
         method: "DELETE",
     })
