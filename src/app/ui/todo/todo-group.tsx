@@ -16,7 +16,7 @@ export default function TodoGroup({
         setTodoList(fetchedTodoList)
         console.log("fetched data: ", fetchedTodoList)
         console.log("todoListState", todoList)
-    })
+    }, [fetchedTodoList])
 
     useEffect(() => {
         console.log("todoList updated", todoList)
@@ -25,7 +25,7 @@ export default function TodoGroup({
     return (
         <div>
             {todoList && todoList.map((item, index) => (
-                <Todo key={index} todo={item}></Todo>
+                <Todo key={item.id} todo={item}></Todo>
             ))}
         </div>
     )

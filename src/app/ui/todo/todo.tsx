@@ -11,7 +11,7 @@ export default function Todo({
     return (
         <div className="flex flex-row gap-5 bg-gray-100 p-3 rounded-lg">
             <TodoCheckboxForm todo={todo}></TodoCheckboxForm>
-            <TodoEditForm id={todo.id} title={todo.title}></TodoEditForm>
+            <TodoEditForm todo={todo}></TodoEditForm>
             <TodoDeleteForm id={todo.id}></TodoDeleteForm>
         </div>
     );

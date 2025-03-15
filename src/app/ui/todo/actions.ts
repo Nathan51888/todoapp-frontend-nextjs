@@ -5,8 +5,8 @@ import { revalidatePath } from "next/cache"
 
 export async function createTodoAction(prevState: any, formData: FormData) {
     const title = formData.get("title") as string
+    if (title === "") return { title: "" }
     const data = await createTodo(title)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
     console.log(data)
     revalidatePath('/')
 
