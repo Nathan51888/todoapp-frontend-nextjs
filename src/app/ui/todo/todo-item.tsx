@@ -3,7 +3,7 @@ import { TodoDeleteForm } from './todo-delete-form';
 import { TodoCheckboxForm } from './todo-checkbox-form';
 import TodoEditForm from './todo-edit-form';
 
-export default function Todo({
+export default function TodoItem({
     todo
 }: {
     todo: TodoObject

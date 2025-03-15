@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState, } from "react";
 import { TodoList } from '@/app/lib/definitions'
-import Todo from "@/app/ui/todo/todo";
+import TodoItem from "./todo-item";
 
 export default function TodoGroup({
     data
@@ -25,7 +25,7 @@ export default function TodoGroup({
     return (
         <div>
             {todoList && todoList.map((item, index) => (
-                <Todo key={item.id} todo={item}></Todo>
+                <TodoItem key={item.id} todo={item}></TodoItem>
             ))}
         </div>
     )
