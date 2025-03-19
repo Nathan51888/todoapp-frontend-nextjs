@@ -1,18 +1,17 @@
 "use server"
 
-import { cookies } from "next/headers"
+import { getUserProfile } from "../lib/data"
 
 export default async function Profile() {
-    // TODO: use middleware for Authorization
-    const cookieStore = await cookies()
-    const token = cookieStore.get("refreshToken")
-    const res = await fetch("http://localhost:8080/profile", {
-        method: "GET",
-        headers: { "Authorization": token?.value as string },
-    })
-    const data = await res.json()
-    console.log(data)
+    const data = await getUserProfile()
+    console.log("Page: ", data)
     return (
-        <div>Profile</div>
+        <div className="bg-white">
+            <h1>Profile</h1>
+            <p>Email: {data.email}</p>
+            <p>First Name: {data.firstName}</p>
+            <p>Last Name: {data.lastName}</p>
+            <p>Birthday: {data.birthday}</p>
+        </div>
     )
 }

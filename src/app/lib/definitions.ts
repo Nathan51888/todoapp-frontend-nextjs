@@ -5,3 +5,10 @@ export type TodoObject = {
 }
 
 export type TodoList = TodoObject[]
+
+export type UserProfile = {
+    email: string;
+    firstName: string;
+    lastName: string;
+    birthday: string;
+}
