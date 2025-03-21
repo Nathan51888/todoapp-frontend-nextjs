@@ -16,8 +16,6 @@ type LoginFormData = {
 }
 
 type RegisterFormData = {
-    firstName: string,
-    lastName: string,
     email: string,
     password: string,
 }
@@ -65,13 +63,13 @@ export async function sendUserLogin(prevState: any, formData: FormData): Promise
         message: "Login success",
     }
 }
-export async function sendUserRegister(error: any, formData: FormData) {
+export async function sendUserRegister(prevState: any, formData: FormData): Promise<ActionResponse> {
     // fake delay
-    await new Promise(resolve => setTimeout(resolve, 500))
+    await new Promise(resolve => setTimeout(resolve, 1500))
 
     const rawData: RegisterFormData = {
-        firstName: "Joe",
-        lastName: "Mama",
+        // firstName: "Joe",
+        // lastName: "Mama",
         email: formData.get("email") as string,
         password: formData.get("password") as string,
     }
@@ -89,10 +87,14 @@ export async function sendUserRegister(error: any, formData: FormData) {
     })
     if (!res.ok) {
         return {
-            message: res.text()
+            success: false,
+            message: "Failed to submit form",
+            errors: await res.text(),
+            inputs: rawData,
         }
     }
     return {
+        success: true,
         message: "Register success"
     }
 }
