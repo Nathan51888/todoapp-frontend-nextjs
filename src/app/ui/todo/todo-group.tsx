@@ -24,7 +24,7 @@ export default function TodoGroup({
 
     return (
         <div>
-            {todoList && todoList.map((item, index) => (
+            {todoList?.length && todoList.map((item, index) => (
                 <TodoItem key={item.id} todo={item}></TodoItem>
             ))}
         </div>
