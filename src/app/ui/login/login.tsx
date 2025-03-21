@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useRef } from "react";
+import { startTransition, useActionState } from "react";
 import { ActionResponse, sendUserLogin } from "./actions";
 import { useForm } from "react-hook-form";
 import { LoginSchema, loginSchema } from "@/app/lib/schema";
@@ -16,15 +16,22 @@ const initialState: ActionResponse = {
 }
 
 export default function Login() {
+    const [state, formAction, isPending] = useActionState(sendUserLogin, initialState)
     const form = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
             password: "",
+            ...(state.inputs ?? {}),
         }
     })
-    const formRef = useRef<HTMLFormElement>(null)
-    const [state, action, isPending] = useActionState(sendUserLogin, initialState)
+
+    async function onSubmit(data: LoginSchema) {
+        const formData = new FormData()
+        Object.entries(data).forEach(([key, value]) => formData.append(key, value))
+        startTransition(() => formAction(formData))
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -33,9 +40,8 @@ export default function Login() {
             <CardContent>
                 <Form {...form}>
                     <form
-                        ref={formRef}
-                        action={action}
-                        onSubmit={form.handleSubmit(() => formRef.current?.submit())}
+                        action={formAction}
+                        onSubmit={form.handleSubmit(onSubmit)}
                         className="flex flex-col gap-4"
                     >
                         <FormField
@@ -58,21 +64,22 @@ export default function Login() {
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Password" {...field} />
+                                        <Input placeholder="Password" type="password" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+                        <div>
+                            <p>{state.message}</p>
+                            {state?.errors && (
+                                <p className="text-red-500">{state?.errors}</p>
+                            )}
+                        </div>
                         <Button type="submit" disabled={isPending}>{isPending ? "Submitting" : "Login"}</Button>
                     </form>
                 </Form>
-                <p>{state.message}</p>
-                {state?.errors && (
-                    <p>{state?.errors}</p>
-                )}
-                <p>{isPending ? "Pending..." : "Done"}</p>
             </CardContent>
-        </Card>
+        </Card >
     )
 }

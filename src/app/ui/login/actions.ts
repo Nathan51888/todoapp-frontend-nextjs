@@ -24,7 +24,7 @@ type RegisterFormData = {
 
 export async function sendUserLogin(prevState: any, formData: FormData): Promise<ActionResponse> {
     // fake delay
-    await new Promise(resolve => setTimeout(resolve, 500))
+    await new Promise(resolve => setTimeout(resolve, 1500))
 
     const rawData: LoginFormData = {
         email: formData.get("email") as string,
