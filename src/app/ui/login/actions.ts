@@ -75,6 +75,14 @@ export async function sendUserRegister(error: any, formData: FormData) {
         email: formData.get("email") as string,
         password: formData.get("password") as string,
     }
+    const parsed = loginSchema.safeParse(rawData)
+    console.log(parsed)
+    if (!parsed.success) {
+        return {
+            success: false,
+            message: "Invalid form data",
+        }
+    }
     const res = await fetch("http://localhost:8080/register", {
         method: "POST",
         body: JSON.stringify(rawData)
