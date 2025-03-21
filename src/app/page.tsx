@@ -1,8 +1,8 @@
-import TodoGroup from "@/app/ui/todo/todo-group";
+import TodoGroup from "@/app/components/todo/todo-group";
 import { TodoList } from "./lib/definitions";
 import { Suspense } from "react";
 import { getAllTodos } from "./lib/data";
-import TodoAddForm from "./ui/todo/todo-add-form";
+import TodoAddForm from "./components/todo/todo-add-form";
 
 export default async function Home() {
     const data: Promise<TodoList> = getAllTodos()

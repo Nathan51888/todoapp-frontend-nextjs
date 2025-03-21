@@ -1,5 +1,5 @@
-import Login from "../ui/login/login";
-import Register from "../ui/login/register";
+import Login from "../components/login/login";
+import Register from "../components/login/register";
 
 export default function Page() {
     return (
