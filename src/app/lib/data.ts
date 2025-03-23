@@ -10,7 +10,7 @@ export async function getUserProfile(): Promise<UserProfile> {
         headers: { "Authorization": token?.value as string },
     })
     const data = await res.json()
-    console.log("Data: ", data)
+    console.log("getUserProfile fetched data: ", data)
     return data
 }
 
