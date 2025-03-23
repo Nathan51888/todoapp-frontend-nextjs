@@ -1,16 +1,16 @@
 'use client'
 
 import { use, useEffect, useState, } from "react";
-import { TodoList } from '@/app/lib/definitions'
+import { TodoObjectList } from '@/app/lib/definitions'
 import TodoItem from "./todo-item";
 
-export default function TodoGroup({
+export default function TodoList({
     data
 }: {
-    data: Promise<TodoList>
+    data: Promise<TodoObjectList>
 }) {
     const fetchedTodoList = use(data)
-    const [todoList, setTodoList] = useState<TodoList>([]);
+    const [todoList, setTodoList] = useState<TodoObjectList>([]);
 
     useEffect(() => {
         setTodoList(fetchedTodoList)

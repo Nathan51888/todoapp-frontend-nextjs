@@ -4,7 +4,7 @@ export type TodoObject = {
     completed: boolean;
 }
 
-export type TodoList = TodoObject[]
+export type TodoObjectList = TodoObject[]
 
 export type UserProfile = {
     email: string;

@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { TodoList, TodoObject, UserProfile } from "./definitions";
+import { TodoObjectList, TodoObject, UserProfile } from "./definitions";
 
 export async function getUserProfile(): Promise<UserProfile> {
     // TODO: use middleware for Authorization
@@ -14,7 +14,7 @@ export async function getUserProfile(): Promise<UserProfile> {
     return data
 }
 
-export async function getAllTodos(): Promise<TodoList> {
+export async function getAllTodos(): Promise<TodoObjectList> {
     const cookieStore = await cookies()
     const token = cookieStore.get("refreshToken")
     const res = await fetch("http://localhost:8080/todo", {
