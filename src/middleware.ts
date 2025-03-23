@@ -14,6 +14,8 @@ export async function middleware(req: NextRequest) {
     const cookieStore = await cookies()
     const token = cookieStore.get("refreshToken")?.value as string
 
+    // verify token
+
     // redirect to login if token doesn't exist
     if (isProtectedRoute && !token) {
         console.log("protected route with no token")
@@ -23,19 +25,6 @@ export async function middleware(req: NextRequest) {
     // redirect to dashboard if token exists
     if (isPublicRoutes && token && !req.nextUrl.pathname.startsWith('/dashboard')) {
         return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
-    }
-
-    // add Authorization header for protected routes
-    if (isProtectedRoute) {
-        console.log(token)
-        const requestHeaders = new Headers(req.headers)
-        requestHeaders.set("Authorization", token)
-        const response = NextResponse.next({
-            request: {
-                headers: requestHeaders
-            }
-        })
-        return response
     }
 
     return NextResponse.next()

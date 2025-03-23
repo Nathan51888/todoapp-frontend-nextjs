@@ -1,81 +1,49 @@
 import { cookies } from "next/headers";
 import { TodoObjectList, TodoObject, UserProfile } from "./definitions";
+import api from "./api";
 
 export async function getUserProfile(): Promise<UserProfile> {
-    // TODO: use middleware for Authorization
-    const cookieStore = await cookies()
-    const token = cookieStore.get("refreshToken")
-    const res = await fetch("http://localhost:8080/profile", {
-        method: "GET",
-        headers: { "Authorization": token?.value as string },
-    })
-    const data = await res.json()
+    const res = await api.get("/profile")
+    const data = res.data
     console.log("getUserProfile fetched data: ", data)
     return data
 }
 
 export async function getAllTodos(): Promise<TodoObjectList> {
-    const cookieStore = await cookies()
-    const token = cookieStore.get("refreshToken")
-    const res = await fetch("http://localhost:8080/todo", {
-        method: "GET",
-        headers: { "Authorization": token?.value as string }
-    })
-    const data = await res.json()
+    const res = await api.get("http://localhost:8080/todo")
+    const data = res.data
     return data
 }
 
 export async function createTodo(title: string): Promise<TodoObject> {
-    const cookieStore = await cookies()
-    const token = cookieStore.get("refreshToken")
-    const res = await fetch("http://localhost:8080/todo", {
-        method: "POST",
+    const res = await api.post("http://localhost:8080/todo", {
         body: JSON.stringify({
             title: title,
             completed: false,
         }),
-        headers: {
-            "Content-type": "application/json",
-            "Authorization": token?.value as string,
-        }
     })
-    const data = await res.json()
+    const data = res.data
     console.log(data)
     return data
 }
 
 export async function updateTodoCompleted(id: string, completed: boolean): Promise<TodoObject> {
-    const cookieStore = await cookies()
-    const token = cookieStore.get("refreshToken")
-    const res = await fetch(`http://localhost:8080/todo?id=${id}&completed=${completed}`, {
-        method: "PUT",
-        headers: { "Authorization": token?.value as string }
-    })
-    const data = await res.json()
+    const res = await api.put(`http://localhost:8080/todo?id=${id}&completed=${completed}`)
+    const data = res.data
     console.log(data)
     return data
 }
 
 export async function updateTodoTitle(id: string, title: string) {
-    const cookieStore = await cookies()
-    const token = cookieStore.get("refreshToken")
-    const res = await fetch(`http://localhost:8080/todo?id=${id}&title=${title}`, {
-        method: "PUT",
-        headers: { "Authorization": token?.value as string }
-    })
-    const data = await res.json()
+    const res = await api.put(`http://localhost:8080/todo?id=${id}&title=${title}`)
+    const data = res.data
     console.log("updateTodoTitle fetched data: ", data)
     return data
 }
 
 export async function deleteTodoById(id: string): Promise<TodoObject> {
-    const cookieStore = await cookies()
-    const token = cookieStore.get("refreshToken")
-    const res = await fetch("http://localhost:8080/todo?id=" + id, {
-        method: "DELETE",
-        headers: { "Authorization": token?.value as string }
-    })
-    const data = await res.json()
+    const res = await api.delete("http://localhost:8080/todo?id=" + id)
+    const data = res.data
     console.log(data)
     return data
 }
