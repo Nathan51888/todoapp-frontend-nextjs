@@ -7,7 +7,7 @@ export async function createTodoAction(prevState: any, formData: FormData) {
     const title = formData.get("title") as string
     if (title === "") return { title: "" }
     const data = await createTodo(title)
-    console.log(data)
+    console.log("createTodoAction data: ", data)
     revalidatePath('/')
 
     return {
@@ -18,7 +18,7 @@ export async function createTodoAction(prevState: any, formData: FormData) {
 export async function updateTodoCompletedAction(id: string, completed: boolean) {
     console.log(id, completed)
     const data = await updateTodoCompleted(id, completed)
-    console.log(data)
+    console.log("updateTodoCompletedAction data: ", data)
     revalidatePath("/")
 }
 
@@ -26,12 +26,12 @@ export async function updateTodoTitleAction(formData: FormData) {
     const id = formData.get("id") as string
     const title = formData.get("title") as string
     const data = await updateTodoTitle(id, title)
-    console.log("action data: ", data)
+    console.log("updateTodoTitleAction data: ", data)
 }
 
 export async function deleteTodoAction(formData: FormData) {
     const id = formData.get("id") as string
     const data = await deleteTodoById(id)
-    console.log(data)
+    console.log("deleteTodoAction data: ", data)
     revalidatePath("/")
 }
