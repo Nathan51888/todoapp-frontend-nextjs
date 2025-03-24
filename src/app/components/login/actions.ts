@@ -2,6 +2,8 @@
 
 import { loginSchema } from "@/app/lib/schema"
 import { cookies } from "next/headers"
+import { signIn } from "next-auth/react"
+import { redirect } from "next/navigation"
 
 export type ActionResponse = {
     success: boolean,
@@ -37,6 +39,20 @@ export async function sendUserLogin(prevState: any, formData: FormData): Promise
         }
     }
 
+    // next auth
+    // const result = await signIn("credentials", {
+    //     redirect: false,
+    //     email: rawData.email,
+    //     password: rawData.password,
+    // })
+    // if (!result?.ok) {
+    //     return {
+    //         success: false,
+    //         message: "Failed to login",
+    //         errors: result?.error as string,
+    //     }
+    // }
+
     const res = await fetch("http://localhost:8080/login", {
         method: "POST",
         body: JSON.stringify({
@@ -53,11 +69,26 @@ export async function sendUserLogin(prevState: any, formData: FormData): Promise
         }
     }
     const data = await res.json()
-    const token = data.token
-    console.log(token)
+    const accessToken = data.token
+    const refreshToken = data.refreshToken
+    console.log("accessT: ", accessToken)
+    console.log("refreshT: ", refreshToken)
 
     const cookieStore = await cookies()
-    cookieStore.set("refreshToken", token)
+    cookieStore.set({
+        name: "accessToken",
+        value: accessToken,
+        httpOnly: true,
+        secure: true,
+        path: "/"
+    })
+    cookieStore.set({
+        name: "refreshToken",
+        value: refreshToken,
+        httpOnly: true,
+        secure: true,
+        path: "/"
+    })
     return {
         success: true,
         message: "Login success",

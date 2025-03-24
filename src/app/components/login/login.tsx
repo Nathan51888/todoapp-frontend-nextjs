@@ -1,6 +1,6 @@
 "use client"
 
-import { startTransition, useActionState } from "react";
+import { startTransition, useActionState, useEffect } from "react";
 import { ActionResponse, sendUserLogin } from "./actions";
 import { useForm } from "react-hook-form";
 import { LoginSchema, loginSchema } from "@/app/lib/schema";
@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 const initialState: ActionResponse = {
     success: false,
@@ -16,6 +17,7 @@ const initialState: ActionResponse = {
 }
 
 export default function Login() {
+    const router = useRouter()
     const [state, formAction, isPending] = useActionState(sendUserLogin, initialState)
     const form = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
@@ -25,6 +27,12 @@ export default function Login() {
             ...(state.inputs ?? {}),
         }
     })
+
+    useEffect(() => {
+        if (state.success) {
+            router.push("/dashboard")
+        }
+    }, [state])
 
     async function onSubmit(data: LoginSchema) {
         const formData = new FormData()

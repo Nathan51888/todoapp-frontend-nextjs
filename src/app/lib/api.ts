@@ -12,9 +12,9 @@ const api = axios.create({
 api.interceptors.request.use(
     async (config) => {
         const cookieStore = await cookies()
-        const token = cookieStore.get("refreshToken")
-        if (token) {
-            config.headers.Authorization = `${token.value}`
+        const accessToken = cookieStore.get("accessToken")
+        if (accessToken) {
+            config.headers.Authorization = `${accessToken.value}`
         }
         return config
     },
@@ -36,6 +36,13 @@ api.interceptors.response.use(
                 const { accessToken } = res.data
 
                 // Set access token to session cookie
+                cookieStore.set({
+                    name: "accessToken",
+                    value: accessToken,
+                    httpOnly: true,
+                    secure: true,
+                    path: "/",
+                })
 
                 // Retry the original request with new token
                 originalRequest.headers.Authorization = `${accessToken}`
