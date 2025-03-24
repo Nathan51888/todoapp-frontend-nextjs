@@ -4,9 +4,10 @@ import { cookies } from "next/headers";
 const api = axios.create({
     baseURL: "http://localhost:8080",
     timeout: 1000,
+    withCredentials: true,
     headers: {
         "Content-Type": "application/json",
-    }
+    },
 })
 
 api.interceptors.request.use(
@@ -32,7 +33,7 @@ api.interceptors.response.use(
             try {
                 const cookieStore = await cookies()
                 const refreshToken = cookieStore.get("refreshToken")
-                const res = await axios.post("http://localhost:8080/refresh-token", { refreshToken })
+                const res = await axios.post("http://localhost:8080/refresh-token", { refreshToken }, { withCredentials: true })
                 const { accessToken } = res.data
 
                 // Set access token to session cookie
@@ -49,6 +50,7 @@ api.interceptors.response.use(
                 return axios(originalRequest)
             } catch (error) {
                 // Handle refresh token error or redirect to login
+                console.log(error)
             }
         }
 
