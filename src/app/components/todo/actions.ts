@@ -27,6 +27,7 @@ export async function updateTodoTitleAction(formData: FormData) {
     const title = formData.get("title") as string
     const data = await updateTodoTitle(id, title)
     console.log("updateTodoTitleAction data: ", data)
+    revalidatePath("/")
 }
 
 export async function deleteTodoAction(formData: FormData) {
