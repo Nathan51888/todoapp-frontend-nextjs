@@ -10,27 +10,29 @@ export async function middleware(req: NextRequest) {
     const isProtectedRoute = protectedRoutes.includes(path)
     const isPublicRoutes = publicRoutes.includes(path)
 
+    // TODO: add next auth middleware
+
     // get refresh token
-    const cookieStore = await cookies()
-    const refreshToken = cookieStore.get("refreshToken")?.value as string
-    const accessToken = cookieStore.get("accessToken")?.value as string
-
-    // redirect to login if refresh token doesn't exist
-    if (isProtectedRoute && !refreshToken) {
-        console.log("protected route with no refresh token")
-        return NextResponse.redirect(new URL('/login', req.nextUrl))
-    }
-
-    // redirect to login if access token doesn't exist
-    if (isProtectedRoute && !accessToken) {
-        console.log("protected route with no access token")
-        return NextResponse.redirect(new URL('/login', req.nextUrl))
-    }
-
-    // verify access token
-    if (isProtectedRoute) {
-        // possibly fetch refresh-token route
-    }
+    // const cookieStore = await cookies()
+    // const refreshToken = cookieStore.get("refreshToken")?.value as string
+    // const accessToken = cookieStore.get("accessToken")?.value as string
+    //
+    // // redirect to login if refresh token doesn't exist
+    // if (isProtectedRoute && !refreshToken) {
+    //     console.log("protected route with no refresh token")
+    //     return NextResponse.redirect(new URL('/login', req.nextUrl))
+    // }
+    //
+    // // redirect to login if access token doesn't exist
+    // if (isProtectedRoute && !accessToken) {
+    //     console.log("protected route with no access token")
+    //     return NextResponse.redirect(new URL('/login', req.nextUrl))
+    // }
+    //
+    // // verify access token
+    // if (isProtectedRoute) {
+    //     // possibly fetch refresh-token route
+    // }
 
 
     // redirect to dashboard if token exists

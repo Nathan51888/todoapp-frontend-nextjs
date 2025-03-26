@@ -1,5 +1,7 @@
+"use server"
 import axios from "axios";
-import { cookies } from "next/headers";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/authOptions";
 
 const api = axios.create({
     baseURL: "http://localhost:8080",
@@ -12,10 +14,11 @@ const api = axios.create({
 
 api.interceptors.request.use(
     async (config) => {
-        const cookieStore = await cookies()
-        const accessToken = cookieStore.get("accessToken")
+        const session = await getServerSession(authOptions)
+        console.log(session)
+        const accessToken = session?.accessToken
         if (accessToken) {
-            config.headers.Authorization = `${accessToken.value}`
+            config.headers.Authorization = `${accessToken}`
         }
         return config
     },
@@ -31,22 +34,14 @@ api.interceptors.response.use(
             originalRequest._retry = true
 
             try {
-                const cookieStore = await cookies()
-                const refreshToken = cookieStore.get("refreshToken")
-                const res = await axios.post("http://localhost:8080/refresh-token", { refreshToken }, { withCredentials: true })
-                const { accessToken } = res.data
-
-                // Set access token to session cookie
-                cookieStore.set({
-                    name: "accessToken",
-                    value: accessToken,
-                    httpOnly: true,
-                    secure: true,
-                    path: "/",
-                })
-
+                // FIXME: put this logic in authOptions so it updates session accessToken
+                const session = await getServerSession(authOptions)
+                if (session === null) throw new Error("User not logged in")
+                const { data } = await axios.post("http://localhost:8080/refresh-token", { refreshToken: session?.refreshToken })
+                // call Next Auth session: trigger jwt callback
+                session.accessToken = data.accessToken
                 // Retry the original request with new token
-                originalRequest.headers.Authorization = `${accessToken}`
+                originalRequest.headers.Authorization = `${data.accessToken}`
                 return axios(originalRequest)
             } catch (error) {
                 // Handle refresh token error or redirect to login

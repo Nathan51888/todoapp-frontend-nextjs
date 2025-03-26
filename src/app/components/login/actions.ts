@@ -1,9 +1,8 @@
 "use server"
 
 import { loginSchema } from "@/app/lib/schema"
-import { cookies } from "next/headers"
 import { signIn } from "next-auth/react"
-import { redirect } from "next/navigation"
+import { cookies } from "next/headers"
 
 export type ActionResponse = {
     success: boolean,

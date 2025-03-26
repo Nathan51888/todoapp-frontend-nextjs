@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const initialState: ActionResponse = {
     success: false,
@@ -37,7 +38,13 @@ export default function Login() {
     async function onSubmit(data: LoginSchema) {
         const formData = new FormData()
         Object.entries(data).forEach(([key, value]) => formData.append(key, value))
-        startTransition(() => formAction(formData))
+        // startTransition(() => formAction(formData))
+        const res = await signIn("credentials", {
+            redirect: false,
+            identifier: "test@test.com",
+            password: "test",
+        })
+        console.log(res)
     }
 
     return (
